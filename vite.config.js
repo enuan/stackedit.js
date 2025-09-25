@@ -1,11 +1,12 @@
 import { defineConfig } from "vite";
 import { resolve } from "path";
+import dts from "vite-plugin-dts";
 
 export default defineConfig({
   build: {
     lib: {
       entry: {
-        stackedit: resolve(__dirname, "src/lib.ts"),
+        lib: resolve(__dirname, "src/lib.ts"),
         webcomponent: resolve(__dirname, "src/webcomponent.ts"),
       },
       name: "Stackedit",
@@ -21,4 +22,5 @@ export default defineConfig({
     outDir: "lib",
     emptyOutDir: false,
   },
+  plugins: [dts()],
 });
