@@ -1,50 +1,47 @@
-# stackedit.js
+# @enuan/stackedit-js
 
-[![Build Status](https://img.shields.io/travis/benweet/stackedit.js.svg?style=flat)](https://travis-ci.org/benweet/stackedit.js) [![NPM version](https://img.shields.io/npm/v/stackedit-js.svg?style=flat)](https://www.npmjs.org/package/stackedit-js)
+> Integrate StackEdit into any website as a JavaScript library or Web Component.
 
-> Add StackEdit to any website
+## Installation
 
-### Build setup
+npm install @enuan/stackedit-js
 
-``` bash
-# install dependencies
-npm install
-
-# watch and build for dev
-npm run dev
-
-# build for production
-npm run build
-```
-
-### Quick start
-
-Bind StackEdit to a `textarea`:
+### Usage as JavaScript library (ESM/CommonJS)
 
 ```js
-// Import the lib.
-import Stackedit from 'stackedit-js';
+// Import as ES module
+import Stackedit from "@enuan/stackedit-js";
 
-// Get the textarea.
-const el = document.querySelector('textarea');
+// Or CommonJS
+// const Stackedit = require('@enuan/stackedit-js').default;
 
-// Create the Stackedit object.
+const el = document.querySelector("textarea");
 const stackedit = new Stackedit();
 
-// Open the iframe
 stackedit.openFile({
-  name: 'Filename', // with a filename
+  name: "Filename.md",
   content: {
-    text: el.value // and the Markdown content.
-  }
+    text: el.value,
+  },
 });
 
-// Listen to StackEdit events and apply the changes to the textarea.
-stackedit.on('fileChange', (file) => {
+stackedit.on("fileChange", (file) => {
   el.value = file.content.text;
 });
 ```
 
-### Documentation
+### Usage as Web Component
 
-Full documentation can be found at https://benweet.github.io/stackedit.js/.
+```js
+// Import the web component (ESM)
+import "@enuan/stackedit-js/webcomponent";
+```
+
+In your HTML markup:
+
+```html
+<stackedit-component
+  name="README.md"
+  text="# Welcome to StackEdit"
+></stackedit-component>
+```
