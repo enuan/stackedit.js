@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Test WebComponent Stackedit.js</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+      stackedit-component,
+      stackedit-iframeonly {
+        flex-grow: 1;
+        flex-shrink: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      style="display: flex; flex-direction: column; height: 100vh; gap: 1rem"
+    >
+      <div
+        style="
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          border: 1px solid #ccc;
+        "
+      >
+        <span style="background: #f7f7f7; padding: 4px 8px; font-size: 0.9em"
+          >stackedit-component</span
+        >
+        <stackedit-component text="Ciao da Stackedit.js!"></stackedit-component>
+      </div>
+    </div>
+    <script type="module" src="/src/webcomponent.ts"></script>
+    <script type="module">
+      // Listener per stackedit-component
+      window.addEventListener("DOMContentLoaded", () => {
+        const comp = document.querySelector("stackedit-component");
+        if (comp && typeof comp.on === "function") {
+          comp.on("fileChange", (...args) => {
+            console.log("[stackedit-component] fileChange", ...args);
+          });
+          comp.on("close", () => {
+            console.log("[stackedit-component] close");
+          });
+        }
+        // Listener per stackedit-iframeonly
+        const comp2 = document.querySelector("stackedit-iframeonly");
+        if (comp2 && typeof comp2.on === "function") {
+          comp2.on("fileChange", (...args) => {
+            console.log("[stackedit-iframeonly] fileChange", ...args);
+          });
+          comp2.on("close", () => {
+            console.log("[stackedit-iframeonly] close");
+          });
+        }
+      });
+    </script>
+  </body>
+</html>

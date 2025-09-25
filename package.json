@@ -1,41 +1,45 @@
 {
   "name": "stackedit-js",
   "version": "1.0.7",
-  "description": "Produce universal library with webpack and es6",
-  "main": "docs/lib/stackedit.js",
+  "description": "Produce universal library and webcomponent with vite and es6",
+  "type": "module",
+  "files": [
+    "lib"
+  ],
+  "main": "./lib/stackedit.cjs",
+  "module": "./lib/stackedit.js",
+  "exports": {
+    ".": {
+      "import": "./lib/stackedit.js",
+      "require": "./lib/stackedit.cjs"
+    },
+    "./webcomponent": {
+      "import": "./lib/webcomponent.js",
+      "require": "./lib/webcomponent.cjs"
+    }
+  },
   "scripts": {
-    "lint": "eslint --ext .js src",
-    "build": "webpack --env dev && webpack --env build",
-    "dev": "webpack --progress --colors --watch --env dev",
-    "test": "npm run lint",
-    "preversion": "npm run test",
-    "postversion": "git push origin master --tags && npm publish",
-    "patch": "npm run build && npm version patch -m \"Tag v%s\"",
-    "minor": "npm run build && npm version minor -m \"Tag v%s\"",
-    "major": "npm run build && npm version major -m \"Tag v%s\""
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
   "author": "Benoit Schweblin",
+  "contributors": [
+    {
+      "name": "Antonio Valenti",
+      "email": "antonio@enuan.com"
+    }
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/benweet/stackedit.js/issues"
   },
   "homepage": "https://github.com/benweet/stackedit.js",
   "devDependencies": {
-    "babel-core": "^6.26.3",
-    "babel-eslint": "^8.2.3",
-    "babel-loader": "^7.1.4",
-    "babel-plugin-add-module-exports": "^0.2.1",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-preset-env": "^1.6.1",
-    "eslint": "^4.19.1",
-    "eslint-config-airbnb-base": "^12.1.0",
-    "eslint-loader": "^2.0.0",
-    "eslint-plugin-import": "^2.11.0",
-    "webpack": "^3.10.0",
-    "yargs": "^10.0.3"
+    "typescript": "^5",
+    "vite": "npm:rolldown-vite@7.1.12"
   },
-  "engines": {
-    "node": ">= 8.0.0",
-    "npm": ">= 5.0.0"
+  "overrides": {
+    "vite": "npm:rolldown-vite@7.1.12"
   }
 }
