@@ -13,7 +13,6 @@ export default defineConfig({
     },
 
     rollupOptions: {
-      // Assicurati di escludere le dipendenze esterne che non vuoi includere nel bundle
       external: [],
       output: {
         globals: {},
