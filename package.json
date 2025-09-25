@@ -1,6 +1,6 @@
 {
   "name": "@enuan/stackedit-js",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "Produce universal library and webcomponent with vite and es6",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com/@enuan"
