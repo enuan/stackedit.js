@@ -1,3 +1,9 @@
+declare global {
+  interface HTMLElementTagNameMap {
+    "stackedit-component": StackeditWebComponent;
+  }
+}
+
 const styleContent = `
 :host {
 	display: flex;
