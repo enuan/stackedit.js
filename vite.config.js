@@ -21,5 +21,13 @@ export default defineConfig({
     outDir: "lib",
     emptyOutDir: false,
   },
-  plugins: [dts()],
+  plugins: [
+    dts({
+      entryRoot: "src",
+      outDir: "lib",
+      insertTypesEntry: true,
+      copyDtsFiles: true,
+      include: ["src/**/*.ts", "src/**/*.d.ts"],
+    }),
+  ],
 });

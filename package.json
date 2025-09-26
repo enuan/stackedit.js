@@ -11,7 +11,7 @@
   ],
   "main": "./lib/lib.cjs",
   "module": "./lib/lib.js",
-  "types": "./lib/lib.d.ts",
+  "types": "./lib/index.d.ts",
   "exports": {
     ".": {
       "import": {
