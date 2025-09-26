@@ -120,10 +120,6 @@ export class StackeditComponent extends LitElement {
       window.removeEventListener("message", this._boundMessageHandler);
       this._listenerAdded = false;
     }
-    if (this._iframeEl) {
-      this._iframeEl.src = "about:blank";
-      this._iframeEl = undefined;
-    }
   }
 
   private _handleMessage(event: MessageEvent): void {
@@ -136,6 +132,7 @@ export class StackeditComponent extends LitElement {
     switch (event.data.type) {
       case "ready":
         break;
+      case "close":
       case "fileChange": {
         const payload = event.data.payload;
         const text = payload?.content?.text;
@@ -159,9 +156,6 @@ export class StackeditComponent extends LitElement {
         // ...
         break;
       }
-      case "close":
-      default:
-        this._removeMessageHandler();
     }
   }
 
