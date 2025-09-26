@@ -4,42 +4,72 @@ on:
   push:
     tags:
       - "v*"
-  workflow_dispatch:
+  workflow_dispatch: # Trigger manuale senza input
 
 jobs:
-  publish-gpr:
+  publish:
     runs-on: ubuntu-latest
     permissions:
       contents: write
       packages: write
       actions: read
-    steps:
-      - uses: actions/checkout@v4
 
-      - name: Get latest tag
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        # Necessario per accedere ai tag per il trigger manuale
+        with:
+          fetch-depth: 0
+
+      # --- Blocco logico per determinare il TAG ---
+      - name: 1a. Get tag from push event
+        if: github.event_name == 'push'
+        run: echo "TAG=${{ github.ref_name }}" >> $GITHUB_ENV
+
+      - name: 1b. Get latest tag for manual trigger
+        if: github.event_name == 'workflow_dispatch'
         id: get_latest_tag
         uses: actions-ecosystem/action-get-latest-tag@v1
         with:
-          semver_only: true # opzionale, per filtrare solo tag semver
+          semver_only: true
+
+      - name: 1c. Set tag for manual trigger
+        if: github.event_name == 'workflow_dispatch'
+        run: echo "TAG=${{ steps.get_latest_tag.outputs.tag }}" >> $GITHUB_ENV
+      # --- Fine blocco logico ---
+
+      - name: Verify tag
+        run: |
+          if [ -z "${{ env.TAG }}" ]; then
+            echo "Error: Tag could not be determined."
+            exit 1
+          fi
+          echo "Using tag: ${{ env.TAG }}"
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          registry-url: https://npm.pkg.github.com/
+          scope: "@${{ github.repository_owner }}"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build project
+        run: npm run build
+
+      - name: Publish to GitHub Package Registry
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Create GitHub Release
-        id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.get_latest_tag.outputs.tag }}
-          release_name: Release ${{ steps.get_latest_tag.outputs.tag }}
+          tag_name: ${{ env.TAG }}
+          release_name: Release ${{ env.TAG }}
           draft: false
           prerelease: false
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-          registry-url: https://npm.pkg.github.com/
-      - run: npm ci
-      - run: npm run build
-      - run: npm pack
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
