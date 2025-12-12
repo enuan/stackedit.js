@@ -12,7 +12,7 @@ export type StackeditComponentAttributes = {
 };
 import { LitElement, html, css } from "lit";
 import type { PropertyValueMap } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { property } from "lit/decorators.js";
 
 export interface StackeditFileContent {
   text?: string;
