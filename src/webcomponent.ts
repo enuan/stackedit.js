@@ -29,8 +29,10 @@ export interface StackeditOptions {
   url: string;
 }
 
-@customElement("stackedit-component")
 export class StackeditComponent extends LitElement {
+  static get tag() {
+    return "stackedit-component";
+  }
   @property({ type: String }) text = "";
   @property({ type: String }) name?: string;
   @property({ type: String }) url = "https://stackedit.io/app";
@@ -163,4 +165,8 @@ export class StackeditComponent extends LitElement {
     super.disconnectedCallback();
     this._removeMessageHandler();
   }
+}
+
+if (!customElements.get("stackedit-component")) {
+  customElements.define("stackedit-component", StackeditComponent);
 }
